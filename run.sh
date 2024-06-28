@@ -24,7 +24,7 @@ git clone https://www.modelscope.cn/datasets/issaccv/aiops2024-challenge-dataset
 
 # mv demo/dataset/question.jsonl demo/question.jsonl
 
-unzip demo/dataset/data.zip -d demo/a
+unzip demo/dataset/data.zip -d demo/
 
 # print info 
 echo "The Ollama server is running in the background. Please close current terminal and you can now play with demo!"
