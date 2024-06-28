@@ -20,7 +20,7 @@ async def main():
         model="qwen", base_url=config["OLLAMA_URL"], temperature=0, request_timeout=120
     )
     embeding = HuggingFaceEmbedding(
-        model_name="BAAI/bge-small-zh-v1.5",
+        model_name="BAAI/bge-small-zh-v1.51",
         cache_folder="./",
         embed_batch_size=128,
     )
