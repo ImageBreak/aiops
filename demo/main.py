@@ -22,7 +22,7 @@ async def main():
     embeding = HuggingFaceEmbedding(
         model_name="BAAI/bge-small-zh-v1.5",
         cache_folder="./",
-        embed_batch_size=128,
+        embed_batch_size=129,
     )
     Settings.embed_model = embeding
 
