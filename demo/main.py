@@ -54,7 +54,7 @@ async def main():
     queries = read_jsonl("question.jsonl")
 
     # 生成答案
-    print("Start generating answers....")
+    print("Start generating answers...")
 
     results = []
     for query in tqdm(queries, total=len(queries)):
