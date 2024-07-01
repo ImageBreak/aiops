@@ -18,6 +18,10 @@ bin/ollama create qwen -f modelfile
 
 # download the embedding model
 git clone https://www.modelscope.cn/AI-ModelScope/bge-small-zh-v1.5.git demo/BAAI/bge-small-zh-v1.5
+git clone https://www.modelscope.cn/maidalun/bce-embedding-base_v1.git demo/maidalun1020/bce-embedding-base_v1
+
+# download the reranker
+git clone https://www.modelscope.cn/maidalun/bce-reranker-base_v1.git demo/maidalun1020/bce-reranker-base_v1
 
 # download dataset
 git clone https://www.modelscope.cn/datasets/issaccv/aiops2024-challenge-dataset.git demo/dataset
