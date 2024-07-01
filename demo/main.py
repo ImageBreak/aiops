@@ -1,5 +1,6 @@
 import asyncio
 
+from BCEmbedding.tools.llama_index import BCERerank
 from dotenv import dotenv_values
 from llama_index.core import Settings
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
@@ -19,12 +20,20 @@ async def main():
     llm = Ollama(
         model="qwen", base_url=config["OLLAMA_URL"], temperature=0, request_timeout=120
     )
-    embeding = HuggingFaceEmbedding(
-        model_name="BAAI/bge-small-zh-v1.5",
-        cache_folder="./",
-        embed_batch_size=128,
-    )
-    Settings.embed_model = embeding
+    # embeding = HuggingFaceEmbedding(
+    #     model_name="BAAI/bge-small-zh-v1.5",
+    #     cache_folder="./",
+    #     embed_batch_size=128,
+    # )
+    # Settings.embed_model = embeding
+
+    # init embedding model and reranker model
+    embed_args = {'model_name': 'maidalun1020/bce-embedding-base_v1', 'max_length': 512, 'embed_batch_size': 128,}
+    embed_model = HuggingFaceEmbedding(**embed_args)
+    Settings.embed_model = embed_model
+
+    reranker_args = {'model': 'maidalun1020/bce-reranker-base_v1', 'top_n': 5,}
+    reranker_model = BCERerank(**reranker_args)
 
     # 初始化 数据ingestion pipeline 和 vector store
     client, vector_store = await build_vector_store(config, reindex=False)
@@ -35,7 +44,7 @@ async def main():
 
     if collection_info.points_count == 0:
         data = read_data("data")
-        pipeline = build_pipeline(llm, embeding, vector_store=vector_store)
+        pipeline = build_pipeline(llm, embed_model, vector_store=vector_store)
         # 暂时停止实时索引
         await client.update_collection(
             collection_name=config["COLLECTION_NAME"] or "aiops24",
@@ -49,7 +58,7 @@ async def main():
         )
         print(len(data))
 
-    retriever = QdrantRetriever(vector_store, embeding, similarity_top_k=3)
+    retriever = QdrantRetriever(vector_store, embed_model, similarity_top_k=3)
 
     queries = read_jsonl("question.jsonl")
 
@@ -59,7 +68,7 @@ async def main():
     results = []
     for query in tqdm(queries, total=len(queries)):
         result = await generation_with_knowledge_retrieval(
-            query["query"], retriever, llm
+            query["query"], retriever, llm, reranker=reranker_model
         )
         results.append(result)
 
