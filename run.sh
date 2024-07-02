@@ -17,11 +17,11 @@ wget "https://www.modelscope.cn/api/v1/models/qwen/Qwen2-7B-Instruct-GGUF/repo?R
 bin/ollama create qwen -f modelfile
 
 # download the embedding model
-git clone https://www.modelscope.cn/AI-ModelScope/bge-small-zh-v1.5.git demo/BAAI/bge-small-zh-v1.5
-git clone https://www.modelscope.cn/maidalun/bce-embedding-base_v1.git demo/maidalun1020/bce-embedding-base_v1
+# git clone https://www.modelscope.cn/AI-ModelScope/bge-small-zh-v1.5.git demo/BAAI/bge-small-zh-v1.5
+git clone https://www.modelscope.cn/iic/gte_Qwen2-7B-instruct.git demo/iic/gte-Qwen2-7B-instruct
 
 # download the reranker
-git clone https://www.modelscope.cn/maidalun/bce-reranker-base_v1.git demo/maidalun1020/bce-reranker-base_v1
+git clone https://www.modelscope.cn/quietnight/bge-reranker-large.git demo/quietnight/bge-reranker-large
 
 # download dataset
 git clone https://www.modelscope.cn/datasets/issaccv/aiops2024-challenge-dataset.git demo/dataset

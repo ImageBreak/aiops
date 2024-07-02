@@ -1,12 +1,13 @@
 import asyncio
 
-from BCEmbedding.tools.llama_index import BCERerank
 from dotenv import dotenv_values
 from llama_index.core import Settings
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.llms.ollama import Ollama
 from qdrant_client import models
 from tqdm.asyncio import tqdm
+from sentence_transformers import SentenceTransformer
+from FlagEmbedding import FlagReranker
 
 from pipeline.ingestion import build_pipeline, build_vector_store, read_data
 from pipeline.qa import read_jsonl, save_answers
@@ -28,13 +29,13 @@ async def main():
     # Settings.embed_model = embeding
 
     # init embedding model and reranker model
-    embed_args = {'model_name': 'maidalun1020/bce-embedding-base_v1', 'max_length': 512, 'embed_batch_size': 128,}
-    embed_model = HuggingFaceEmbedding(**embed_args)
+    # embed_args = {'model_name': 'aliQwen/gte_Qwen2-7B-instruct', 'cache_folder': './', 'embed_batch_size': 128,}
+    # embed_model = HuggingFaceEmbedding(**embed_args)
+   
+    embed_model = SentenceTransformer("iic/gte-Qwen2-7B-instruct", trust_remote_code=True)
     Settings.embed_model = embed_model
 
-    reranker_args = {'model': 'maidalun1020/bce-reranker-base_v1', 'top_n': 5,}
-    reranker_model = BCERerank(**reranker_args)
-
+    reranker_model = FlagReranker('quietnight/bge-reranker-large', use_fp16=True)
     # 初始化 数据ingestion pipeline 和 vector store
     client, vector_store = await build_vector_store(config, reindex=False)
 
