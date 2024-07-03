@@ -7,7 +7,7 @@ from llama_index.llms.ollama import Ollama
 from qdrant_client import models
 from tqdm.asyncio import tqdm
 from sentence_transformers import SentenceTransformer
-from FlagEmbedding import FlagReranker
+from FlagEmbedding import LayerWiseFlagLLMReranker, BGEM3FlagModel
 
 from pipeline.ingestion import build_pipeline, build_vector_store, read_data
 from pipeline.qa import read_jsonl, save_answers
@@ -32,10 +32,10 @@ async def main():
     # embed_args = {'model_name': 'aliQwen/gte_Qwen2-7B-instruct', 'cache_folder': './', 'embed_batch_size': 128,}
     # embed_model = HuggingFaceEmbedding(**embed_args)
    
-    embed_model = SentenceTransformer("iic/gte-Qwen2-7B-instruct", trust_remote_code=True)
+    embed_model = BGEM3FlagModel("BAAI/bge-m3", use_fp16=False)
     Settings.embed_model = embed_model
 
-    reranker_model = FlagReranker('quietnight/bge-reranker-large', use_fp16=True)
+    reranker_model = reranker = LayerWiseFlagLLMReranker('BAAI/bge-reranker-v2-minicpm-layerwise', use_fp16=True)
     # 初始化 数据ingestion pipeline 和 vector store
     client, vector_store = await build_vector_store(config, reindex=False)
 
