@@ -6,8 +6,7 @@ from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llama_index.llms.ollama import Ollama
 from qdrant_client import models
 from tqdm.asyncio import tqdm
-from sentence_transformers import SentenceTransformer
-from FlagEmbedding import LayerWiseFlagLLMReranker, BGEM3FlagModel
+from llama_index.postprocessor.flag_embedding_reranker import FlagEmbeddingReranker
 
 from pipeline.ingestion import build_pipeline, build_vector_store, read_data
 from pipeline.qa import read_jsonl, save_answers
@@ -37,9 +36,7 @@ async def main():
     )
     Settings.embed_model = embed_model
     print("embed model loaded!!!!")
-    reranker_model = reranker = LayerWiseFlagLLMReranker(
-        "BAAI/bge-reranker-v2-minicpm-layerwise", use_fp16=True
-    )
+    reranker_model = FlagEmbeddingReranker(top_n=3, model="BAAI/bge-reranker-v2-minicpm-layerwise", use_fp16=True)
     print("reranker model loaded!!!!")
     # 初始化 数据ingestion pipeline 和 vector store
     client, vector_store = await build_vector_store(config, reindex=False)
