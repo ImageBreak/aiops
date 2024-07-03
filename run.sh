@@ -20,7 +20,7 @@ bin/ollama create qwen -f modelfile
 git clone https://www.modelscope.cn/models/Xorbits/bge-m3.git demo/BAAI/bge-m3
 
 # download the reranker
-git clone https://www.modelscope.cn/models/mirror013/bge-reranker-v2-minicpm-layerwise.git demo/BAAI/bge-reranker-large
+git clone https://www.modelscope.cn/models/mirror013/bge-reranker-v2-minicpm-layerwise.git demo/BAAI/bge-reranker-v2-minicpm-layerwise
 
 # download dataset
 git clone https://www.modelscope.cn/datasets/issaccv/aiops2024-challenge-dataset.git demo/dataset

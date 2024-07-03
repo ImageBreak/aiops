@@ -31,11 +31,16 @@ async def main():
     # init embedding model and reranker model
     # embed_args = {'model_name': 'aliQwen/gte_Qwen2-7B-instruct', 'cache_folder': './', 'embed_batch_size': 128,}
     # embed_model = HuggingFaceEmbedding(**embed_args)
-   
-    embed_model = BGEM3FlagModel("BAAI/bge-m3", use_fp16=False)
-    Settings.embed_model = embed_model
 
-    reranker_model = reranker = LayerWiseFlagLLMReranker('BAAI/bge-reranker-v2-minicpm-layerwise', use_fp16=True)
+    embed_model = HuggingFaceEmbedding(
+        model_name="BAAI/bge-m3", embed_batch_size=12, max_length=8192
+    )
+    Settings.embed_model = embed_model
+    print("embed model loaded!!!!")
+    reranker_model = reranker = LayerWiseFlagLLMReranker(
+        "BAAI/bge-reranker-v2-minicpm-layerwise", use_fp16=True
+    )
+    print("reranker model loaded!!!!")
     # 初始化 数据ingestion pipeline 和 vector store
     client, vector_store = await build_vector_store(config, reindex=False)
 
