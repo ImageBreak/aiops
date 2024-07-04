@@ -30,8 +30,8 @@ class OpenAIEmbeddingModel(BaseEmbeddingModel):
 
 
 class SBertEmbeddingModel(BaseEmbeddingModel):
-    def __init__(self, model_name="sentence-transformers/multi-qa-mpnet-base-cos-v1"):
+    def __init__(self, model_name="lier007/xiaobu-embedding-v2"):
         self.model = SentenceTransformer(model_name)
 
     def create_embedding(self, text):
-        return self.model.encode(text)
+        return self.model.encode(text, normalize_embeddings=True)

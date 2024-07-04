@@ -10,6 +10,10 @@ from abc import ABC, abstractmethod
 import torch
 from tenacity import retry, stop_after_attempt, wait_random_exponential
 from transformers import T5ForConditionalGeneration, T5Tokenizer
+from llama_index.llms.ollama import Ollama
+from dotenv import dotenv_values
+from custom.template import QA_TEMPLATE
+from llama_index.core import PromptTemplate
 
 
 class BaseQAModel(ABC):
@@ -183,3 +187,17 @@ class UnifiedQAModel(BaseQAModel):
         input_string = question + " \\n " + context
         output = self.run_model(input_string)
         return output[0]
+
+class QwnQAModel(BaseQAModel):
+    def __init__(self):
+       config = dotenv_values(".env")
+       self.llm = Ollama(
+            model="qwen", base_url=config["OLLAMA_URL"], temperature=0, request_timeout=120
+        )
+       
+    def answer_question(self, context, question):
+        qa_template = QA_TEMPLATE
+        fmt_qa_prompt = PromptTemplate(qa_template).format(
+        context_str=context, query_str=question
+    )
+        return self.llm.complete(fmt_qa_prompt)
