@@ -32,10 +32,10 @@ async def main():
     # embed_args = {'model_name': 'aliQwen/gte_Qwen2-7B-instruct', 'cache_folder': './', 'embed_batch_size': 128,}
     # embed_model = HuggingFaceEmbedding(**embed_args)
 
-    embed_model = HuggingFaceEmbedding(
-        model_name="BAAI/bge-m3", embed_batch_size=512, max_length=8192
-    )
-    # embed_model = HuggingFaceEmbedding('lier007/xiaobu-embedding-v2')
+    # embed_model = HuggingFaceEmbedding(
+    #     model_name="BAAI/bge-m3", embed_batch_size=512, max_length=8192
+    # )
+    embed_model = HuggingFaceEmbedding('lier007/xiaobu-embedding-v2')
     Settings.embed_model = embed_model
     print("embed model loaded!!!!")
     reranker_model = FlagEmbeddingReranker(top_n=3, model='BAAI/bge-reranker-v2-m3', use_fp16=True)
@@ -63,7 +63,7 @@ async def main():
         )
         print(len(data))
 
-    retriever = QdrantRetriever(vector_store, embed_model, similarity_top_k=3)
+    retriever = QdrantRetriever(vector_store, embed_model, similarity_top_k=5)
 
     queries = read_jsonl("question.jsonl")
 

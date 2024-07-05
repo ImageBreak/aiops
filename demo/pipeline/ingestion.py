@@ -32,7 +32,7 @@ def build_pipeline(
     vector_store: BasePydanticVectorStore = None,
 ) -> IngestionPipeline:
     transformation = [
-        SentenceSplitter(chunk_size=1024, chunk_overlap=50),
+        SentenceSplitter(chunk_size=2048, chunk_overlap=200),
         CustomTitleExtractor(metadata_mode=MetadataMode.EMBED),
         CustomFilePathExtractor(last_path_length=4, metadata_mode=MetadataMode.EMBED),
         # SummaryExtractor(
@@ -50,7 +50,7 @@ async def build_vector_store(
     config: dict, reindex: bool = False
 ) -> tuple[AsyncQdrantClient, QdrantVectorStore]:
     client = AsyncQdrantClient(
-        # url=config["QDRANT_URL"],
+        # url=config["QDRANT_URL"]
         location=":memory:"
     )
     if reindex:
