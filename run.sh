@@ -18,7 +18,7 @@ bin/ollama create qwen -f modelfile
 
 # download the embedding model
 git clone https://www.modelscope.cn/models/Xorbits/bge-m3.git demo/BAAI/bge-m3
-git clone https://www.modelscope.cn/models/Tolk8888/xiaobu-embedding-v2.git lier007/xiaobu-embedding-v2
+git clone https://www.modelscope.cn/models/Tolk8888/xiaobu-embedding-v2.git demo/lier007/xiaobu-embedding-v2
 
 # download the reranker
 git clone https://www.modelscope.cn/models/AI-ModelScope/bge-reranker-v2-m3.git demo/BAAI/bge-reranker-v2-m3
